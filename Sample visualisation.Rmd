@@ -1,0 +1,140 @@
+---
+title: "Visualisation"
+author: "me"
+date: "2024-08-11"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE,warning=FALSE)
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+```
+
+
+```{r}
+  
+data_vis<-read.csv2("data_vis.csv")
+
+```
+
+## 1. Histogramme : Distribution de l'Âge
+Montre la répartition des patients par tranche d'âge.
+Utile pour comprendre la démographie de l'échantillon.
+```{r}
+hist_age <- ggplot(data_vis, aes(x = Age)) +
+  geom_histogram(binwidth = 5, fill = "#1f77b4", color = "white", alpha = 0.8) +
+  labs(title = "Distribution de l'Âge des Patients", x = "Âge", y = "Fréquence") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10))
+print(hist_age)
+#
+```
+
+## 2. Box Plot (Boîte à moustaches) : Cholestérol par Groupe de Traitement
+Compare la distribution du cholestérol entre les différents groupes de traitement.
+Permet de visualiser les médianes, quartiles et valeurs aberrantes.
+```{r}
+boxplot_cholesterol <- ggplot(data_vis, aes(x = Treatment, y = Cholesterol, fill = Treatment)) +
+  geom_boxplot(alpha = 0.7, width = 0.6) +
+  labs(title = "Niveau de Cholestérol par Groupe de Traitement", x = "Groupe de Traitement", y = "Cholestérol (mg/dL)") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.position = "none") + # La légende n'est pas nécessaire si la couleur est la même que l'axe des x
+  scale_fill_brewer(palette = "Set2") # Utilise une palette de couleurs prédéfinie
+print(boxplot_cholesterol)
+#
+```
+
+## 3. Nuage de points avec ligne de régression : Âge vs. Pression Artérielle par Sexe
+Explore la relation entre deux variables continues, en différenciant par une variable catégorielle.
+La ligne de régression (méthode "lm" pour linéaire) montre la tendance.
+```{r}
+scatterplot_bp <- ggplot(data_vis, aes(x = Age, y = BloodPressure)) +
+  geom_point(aes(color = Gender), alpha = 0.7, size = 3) + # Points colorés par sexe
+  geom_smooth(method = "lm", se = FALSE, color = "red", linetype = "dashed", linewidth = 1) + # Ligne de régression linéaire
+  labs(title = "Relation entre l'Âge et la Pression Artérielle",
+       x = "Âge",
+       y = "Pression Artérielle (mmHg)",
+       color = "Sexe") + # Titre de la légende de couleur
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.position = "bottom") +
+  scale_color_manual(values = c("Homme" = "#6a0572", "Femme" = "#ab47bc")) # Couleurs personnalisées
+print(scatterplot_bp)
+
+```
+
+## 4. Diagramme en barres empilées (proportionnel) : État de Santé par Traitement
+Montre la proportion de chaque état de santé au sein de chaque groupe de traitement.
+Utile pour comparer la composition des groupes.
+```{r}
+stacked_bar_disease <- ggplot(data_vis, aes(x = Treatment, fill = DiseaseStatus)) +
+  geom_bar(position = "fill", alpha = 0.9, color = "white") + # position = "fill" pour les proportions
+  labs(title = "Proportion de l'État de Santé par Traitement",
+       x = "Groupe de Traitement",
+       y = "Proportion",
+       fill = "État de Santé") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.position = "right") +
+  scale_fill_brewer(palette = "Pastel1") # Une palette plus douce
+print(stacked_bar_disease)
+
+```
+
+## 5. Diagramme de densité : Distribution du Cholestérol par Sexe
+Affiche la distribution lissée du cholestérol pour les hommes et les femmes.
+Permet de visualiser les différences de densité et de chevauchement.
+```{r}
+density_cholesterol <- ggplot(data_vis, aes(x = Cholesterol, fill = Gender)) +
+  geom_density(alpha = 0.6, adjust = 1.5) + # adjust pour lisser la courbe
+  labs(title = "Distribution du Cholestérol par Sexe",
+       x = "Cholestérol (mg/dL)",
+       y = "Densité",
+       fill = "Sexe") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.position = "top") +
+  scale_fill_manual(values = c("Homme" = "#4CAF50", "Femme" = "#FFC107")) # Couleurs distinctes
+print(density_cholesterol)
+
+```
+
+## 6. Graphique en violon : Pression Artérielle par Traitement et Sexe
+Combine les caractéristiques d'un box plot et d'un diagramme de densité.
+Montre la distribution complète des données pour chaque catégorie.
+```{r}
+violin_bp <- ggplot(data_vis, aes(x = Treatment, y = BloodPressure, fill = Gender)) +
+  geom_violin(trim = FALSE, position = position_dodge(width = 0.9), alpha = 0.7) + # trim = FALSE pour voir toute la distribution
+  geom_boxplot(width = 0.1, position = position_dodge(width = 0.9), outlier.shape = NA) + # Ajoute les boîtes à moustaches sans les points aberrants
+  labs(title = "Distribution de la Pression Artérielle par Traitement et Sexe",
+       x = "Groupe de Traitement",
+       y = "Pression Artérielle (mmHg)",
+       fill = "Sexe") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold", size = 16),
+        axis.title = element_text(size = 12),
+        axis.text = element_text(size = 10),
+        legend.position = "bottom") +
+  scale_fill_manual(values = c("Homme" = "#17a2b8", "Femme" = "#fd7e14")) # Couleurs différentes
+print(violin_bp)
+ 
+```
+
+Note: Pour sauvegarder ces graphiques, vous pouvez utiliser la fonction ggsave().
+Exemple: ggsave("histogramme_age.png", plot = hist_age, width = 8, height = 6, dpi = 300)
