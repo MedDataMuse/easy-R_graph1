@@ -171,7 +171,7 @@
     <header>
         <div class="container">
             <h1>Visualisation de Données Médicales</h1>
-            <p>Transformez vos données brutes en informations claires et exploitables.</p>
+            <p>Quelques exemples de visualisations de données usuelles</p>
         </div>
     </header>
 
@@ -383,6 +383,67 @@
                 <p>Analyse détaillée de la distribution de la pression artérielle par traitement et sexe. Combine la densité de points et les indicateurs de quartiles.</p>
             </div>
 
+            <!-- 7. Diagramme Circulaire (Pie Chart) : Proportion par Sexe -->
+            <div class="viz-item">
+                <h3>Diagramme Circulaire : Proportion par Sexe</h3>
+                <div class="graph-container">
+                    <svg viewBox="0 0 200 200">
+                        <!-- Cercle de fond -->
+                        <circle cx="100" cy="100" r="80" fill="#f0f0f0"/>
+                        <!-- Secteur Homme (48%) -->
+                        <path d="M100,100 L100,20 A80,80 0 0,1 170.8,126.8 Z" fill="#6a0572"/>
+                        <!-- Secteur Femme (52%) -->
+                        <path d="M100,100 L170.8,126.8 A80,80 0 0,1 100,20 Z" fill="#ab47bc"/>
+                        <!-- Texte pour les pourcentages -->
+                        <text x="130" y="70" font-size="14" text-anchor="middle" fill="#fff">48%</text>
+                        <text x="70" y="130" font-size="14" text-anchor="middle" fill="#fff">52%</text>
+                        <!-- Légende -->
+                        <rect x="10" y="10" width="10" height="10" fill="#6a0572"/>
+                        <text x="25" y="18" font-size="10" fill="#555">Homme</text>
+                        <rect x="10" y="25" width="10" height="10" fill="#ab47bc"/>
+                        <text x="25" y="33" font-size="10" fill="#555">Femme</text>
+                    </svg>
+                </div>
+                <p>Représentation de la proportion des sexes dans l'échantillon. Idéal pour visualiser la composition catégorielle d'une population.</p>
+            </div>
+
+            <!-- 8. Forest Plot : Effet de Traitement par Étude -->
+            <div class="viz-item">
+                <h3>Forest Plot : Effet de Traitement par Étude</h3>
+                <div class="graph-container">
+                    <svg viewBox="0 0 300 250">
+                        <!-- Ligne de nullité (pas d'effet) -->
+                        <line x1="150" y1="30" x2="150" y2="220" stroke="#666" stroke-width="1" stroke-dasharray="2 2"/>
+                        <!-- Études et leurs intervalles de confiance -->
+                        <!-- Étude 1 -->
+                        <line x1="80" y1="50" x2="180" y2="50" stroke="#007bff" stroke-width="2"/>
+                        <circle cx="130" cy="50" r="4" fill="#007bff"/>
+                        <text x="20" y="55" font-size="10" text-anchor="start" fill="#555">Étude A</text>
+                        <!-- Étude 2 -->
+                        <line x1="120" y1="80" x2="220" y2="80" stroke="#007bff" stroke-width="2"/>
+                        <circle cx="170" cy="80" r="4" fill="#007bff"/>
+                        <text x="20" y="85" font-size="10" text-anchor="start" fill="#555">Étude B</text>
+                        <!-- Étude 3 -->
+                        <line x1="100" y1="110" x2="160" y2="110" stroke="#007bff" stroke-width="2"/>
+                        <circle cx="130" cy="110" r="4" fill="#007bff"/>
+                        <text x="20" y="115" font-size="10" text-anchor="start" fill="#555">Étude C</text>
+                        <!-- Étude 4 -->
+                        <line x1="140" y1="140" x2="200" y2="140" stroke="#007bff" stroke-width="2"/>
+                        <circle cx="170" cy="140" r="4" fill="#007bff"/>
+                        <text x="20" y="145" font-size="10" text-anchor="start" fill="#555">Étude D</text>
+                        <!-- Effet global (simulé) -->
+                        <rect x="140" y="180" width="20" height="20" fill="#dc3545" stroke="#333" stroke-width="1"/>
+                        <line x1="100" y1="190" x2="200" y2="190" stroke="#dc3545" stroke-width="3"/>
+                        <text x="20" y="195" font-size="12" text-anchor="start" fill="#333" font-weight="bold">Effet Global</text>
+
+                        <!-- Labels d'axes (simplifiés) -->
+                        <text x="150" y="230" font-size="10" text-anchor="middle" fill="#555">Effet (ex: Odds Ratio)</text>
+                        <text x="150" y="240" font-size="8" text-anchor="middle" fill="#555">0.5          1          1.5</text>
+                    </svg>
+                </div>
+                <p>Visualisation des effets de traitement de différentes études et de leur effet combiné. Permet de juger de la cohérence des résultats et de l'effet global.</p>
+            </div>
+
         </section>
 
         <section class="cta">
@@ -397,3 +458,4 @@
     </footer>
 </body>
 </html>
+
